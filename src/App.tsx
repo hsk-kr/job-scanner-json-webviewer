@@ -7,8 +7,9 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import JobInfo from './components/JobInfo';
 import JobList from './components/JobList';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IndeedJobInfo } from './types/indeed';
+import { retrieveValue, storeValue } from './lib/storage';
 
 function App() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -36,6 +37,7 @@ function App() {
           }, new Map<string, IndeedJobInfo>());
 
           const newJobInfos = [...jobInfoMap.values()];
+          storeValue('jobinfo', newJobInfos);
           setJobInfos(newJobInfos);
         };
 
@@ -60,6 +62,18 @@ function App() {
   const handleItemClick = (index: number) => {
     setSelectedItemIndex(index);
   };
+
+  useEffect(() => {
+    try {
+      const jobInfos = retrieveValue('jobinfo');
+      if (!jobInfos) return;
+
+      setJobInfos(jobInfos);
+    } catch (e) {
+      alert('Failed to load data');
+      console.error(e);
+    }
+  }, []);
 
   const selectedJobInfo =
     selectedItemIndex !== undefined ? jobInfos[selectedItemIndex] : null;
