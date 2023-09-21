@@ -13,9 +13,7 @@ import { IndeedJobInfo } from './types/indeed';
 function App() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [jobInfos, setJobInfos] = useState<IndeedJobInfo[]>([]);
-  const [selectedJobInfo, setSelectedJobInfo] = useState<IndeedJobInfo | null>(
-    null
-  );
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number>();
 
   const handleFileUpload = () => {
     if (!fileRef?.current?.files?.length) return;
@@ -60,8 +58,11 @@ function App() {
   };
 
   const handleItemClick = (index: number) => {
-    setSelectedJobInfo(jobInfos[index]);
+    setSelectedItemIndex(index);
   };
+
+  const selectedJobInfo =
+    selectedItemIndex !== undefined ? jobInfos[selectedItemIndex] : null;
 
   return (
     <Layout>
@@ -83,7 +84,11 @@ function App() {
         </Button>
         {selectedJobInfo && <JobInfo {...selectedJobInfo} />}
         <Divider sx={{ height: 10 }} />
-        <JobList items={jobInfos} onItemClick={handleItemClick} />
+        <JobList
+          items={jobInfos}
+          onItemClick={handleItemClick}
+          selectedItemIndex={selectedItemIndex}
+        />
       </>
     </Layout>
   );

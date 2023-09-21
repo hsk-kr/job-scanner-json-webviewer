@@ -10,9 +10,10 @@ import { IndeedJobInfo } from '../../types/indeed';
 interface JobListProps {
   items: IndeedJobInfo[];
   onItemClick?: (index: number) => void;
+  selectedItemIndex?: number;
 }
 
-const JobList = ({ items, onItemClick }: JobListProps) => {
+const JobList = ({ items, onItemClick, selectedItemIndex }: JobListProps) => {
   const handleItemClick = (index: number) => () => {
     onItemClick?.(index);
   };
@@ -30,7 +31,12 @@ const JobList = ({ items, onItemClick }: JobListProps) => {
         }}
       >
         {items.map((item, idx) => (
-          <ListItem key={idx} component="div" disablePadding>
+          <ListItem
+            key={idx}
+            component="div"
+            style={selectedItemIndex === idx ? { backgroundColor: '#ccc' } : {}}
+            disablePadding
+          >
             <ListItemButton onClick={handleItemClick(idx)}>
               <ListItemText primary={`${idx + 1}. ${item.jobTitle}`} />
             </ListItemButton>
