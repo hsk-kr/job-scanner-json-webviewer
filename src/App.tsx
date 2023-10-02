@@ -8,12 +8,12 @@ import Divider from '@mui/material/Divider';
 import JobInfo from './components/JobInfo';
 import JobList from './components/JobList';
 import { useEffect, useRef, useState } from 'react';
-import { IndeedJobInfo } from './types/indeed';
+import { JobInfoUnion } from './types/job';
 import { retrieveValue, storeValue } from './lib/storage';
 
 function App() {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [jobInfos, setJobInfos] = useState<IndeedJobInfo[]>([]);
+  const [jobInfos, setJobInfos] = useState<JobInfoUnion[]>([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number>();
 
   const handleFileUpload = () => {
@@ -27,14 +27,14 @@ function App() {
           return;
         }
 
-        const jobInfos = JSON.parse(fr.result || '[]') as IndeedJobInfo[];
+        const jobInfos = JSON.parse(fr.result || '[]') as JobInfoUnion[];
 
         const getRidOfDuplicationAndSetJobInfos = () => {
           const jobInfoMap = jobInfos.reduce((map, value) => {
             map.set(value.url, value);
 
             return map;
-          }, new Map<string, IndeedJobInfo>());
+          }, new Map<string, JobInfoUnion>());
 
           const newJobInfos = [...jobInfoMap.values()];
           storeValue('jobinfo', newJobInfos);

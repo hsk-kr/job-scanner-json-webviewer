@@ -1,30 +1,32 @@
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import { IndeedJobInfo } from '../../types/indeed';
+import { JobInfoUnion } from '../../types/job';
 
-interface JobInfoProps extends IndeedJobInfo {
+interface JobInfoProps extends JobInfoUnion {
   onView?: (url: string) => void;
 }
 
-const JobInfo = ({ jobTitle, companyName, url }: JobInfoProps) => {
+const JobInfo = ({
+  jobTitle,
+  companyName,
+  url,
+  jobAdditionalInfo,
+}: JobInfoProps) => {
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
         <Typography variant="h5">{jobTitle}</Typography>
         <Typography variant="h6" color="text.secondary">
-          {companyName}
+          {companyName ?? jobAdditionalInfo}
         </Typography>
         <Typography variant="body2">
-          <Link href={url}>{url}</Link>
+          <Link href={url} target="_blank">
+            {url}
+          </Link>
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">View</Button>
-      </CardActions>
     </Card>
   );
 };

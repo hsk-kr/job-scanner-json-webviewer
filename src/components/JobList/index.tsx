@@ -5,10 +5,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import { IndeedJobInfo } from '../../types/indeed';
+import { JobInfoUnion } from '../../types/job';
 
 interface JobListProps {
-  items: IndeedJobInfo[];
+  items: JobInfoUnion[];
   onItemClick?: (index: number) => void;
   selectedItemIndex?: number;
 }
