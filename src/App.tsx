@@ -15,6 +15,7 @@ function App() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [jobInfos, setJobInfos] = useState<JobInfoUnion[]>([]);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number>();
+  const jobInfoLength = useRef<number>(0);
 
   const handleFileUpload = () => {
     if (!fileRef?.current?.files?.length) return;
@@ -68,11 +69,43 @@ function App() {
       const jobInfos = retrieveValue('jobinfo');
       if (!jobInfos) return;
 
+      setSelectedItemIndex(undefined);
       setJobInfos(jobInfos);
     } catch (e) {
       alert('Failed to load data');
       console.error(e);
     }
+  }, []);
+
+  useEffect(() => {
+    jobInfoLength.current = jobInfos.length;
+  }, [jobInfos]);
+
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowUp':
+          setSelectedItemIndex((prevIndex) => {
+            if (prevIndex === undefined) return undefined;
+            return prevIndex <= 0 ? 0 : prevIndex - 1;
+          });
+          break;
+        case 'ArrowDown':
+          setSelectedItemIndex((prevIndex) => {
+            if (prevIndex === undefined) return undefined;
+            return prevIndex >= jobInfoLength.current - 1
+              ? jobInfoLength.current - 1
+              : prevIndex + 1;
+          });
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+    };
   }, []);
 
   const selectedJobInfo =
