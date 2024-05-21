@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 html, body, #root {
+  font-family: 'Roboto', system-ui, sans-serif;
   height: 100%;
 }
