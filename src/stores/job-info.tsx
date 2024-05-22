@@ -27,7 +27,7 @@ const JobInfoContextProvider = ({ children }: { children?: ReactNode }) => {
   useEffect(() => {
     const jobInfosFromStorage = retrieveValue('jobinfo') ?? [];
     setJobInfos(jobInfosFromStorage);
-  }, [jobInfos]);
+  }, []);
 
   const updateJobInfosFromFile: JobInfoContext['updateJobInfosFromFile'] =
     useCallback((file: File) => {
